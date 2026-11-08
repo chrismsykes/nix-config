@@ -17,6 +17,7 @@
     user.linger = true;
     user.home = {
       my.rex.server.enable = true;
+      my.rex.server.tailscaleHostname = "devbox-lite";
     };
   };
 

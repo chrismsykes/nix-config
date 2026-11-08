@@ -21,6 +21,7 @@
     user.home = {
       my.dev.enable = true;
       my.rex.server.enable = true;
+      my.rex.server.tailscaleHostname = "devbox";
     };
   };
 

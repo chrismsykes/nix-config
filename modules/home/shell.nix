@@ -35,7 +35,8 @@
         "kubectl"
         "nmap"
         "npm"
-        "per-directory-history"
+        # "per-directory-history" is deliberately left out: it stops atuin from recording
+        # anything once a history file exists. Atuin's up-arrow filter (below) replaces it.
         "rsync"
         "ssh"
         "sudo"
@@ -103,10 +104,16 @@
     LC_ALL = "en_US.UTF-8";
   };
 
-  # Ctrl+R history search. Atuin's zsh hook loads after omz's fzf plugin, so it takes Ctrl+R (same as before).
+  # Shell history. Atuin's zsh hook loads after omz's fzf plugin, so it takes Ctrl+R and the up arrow.
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
+    settings = {
+      # Up arrow: this directory's history (what per-directory-history's "local" mode did).
+      # Ctrl+R: everything. Press Ctrl+R again inside the search to cycle filter modes.
+      filter_mode_shell_up_key_binding = "directory";
+      filter_mode = "global";
+    };
   };
 
   # Per-repo environments: put `use flake` (or `use mise`) in a repo's .envrc.

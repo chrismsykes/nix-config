@@ -18,6 +18,9 @@
 
     oh-my-zsh = {
       enable = true;
+      # From unstable: the 2026-02-19 omz in nixos-26.05 has an older per-directory-history that
+      # stops atuin recording anything once a history file exists. Fixed upstream; revisit at 26.11.
+      package = pkgs.unstable.oh-my-zsh;
       # Same list as .chezmoi.toml.tmpl, minus: "ubuntu" (apt aliases), "themes", and the three
       # non-omz plugins (autosuggestions/syntax-highlighting above, you-should-use below).
       plugins = [

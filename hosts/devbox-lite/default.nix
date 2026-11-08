@@ -9,6 +9,7 @@
 
   my = {
     vmGuest.enable = true;
+    disk.enable = true;
     desktop.enable = true;
     desktop.remote.enable = true;
     containers.enable = true;

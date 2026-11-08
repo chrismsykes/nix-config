@@ -99,7 +99,37 @@ nixos-rebuild build-vm --flake .#devbox-lite && ./result/bin/run-*-vm
 
 ## Installing a host
 
-1. Boot the NixOS minimal ISO. Use UEFI (in Proxmox/libvirt, set the VM firmware to OVMF).
+### VMs (devbox, devbox-lite): nixos-anywhere, run from another machine
+
+The disk layout lives in `modules/nixos/disk.nix` (disko). nixos-anywhere partitions the disk
+from it, installs this flake over SSH, and writes the real hardware-configuration.nix back here.
+
+1. Create the Proxmox VM: `q35`, **OVMF (UEFI)** + EFI disk with **"Pre-Enroll keys" unchecked**,
+   Qemu Agent on, VirtIO SCSI disk (64 GB+), CPU type `host`, display **VirtIO-GPU**.
+2. Boot the NixOS minimal ISO. In the Proxmox console, run `sudo passwd root` (temporary,
+   installer only) and `ip a` to get its IP.
+3. From a machine with this repo and Nix (**this erases the VM's disk**):
+   ```sh
+   nix run github:nix-community/nixos-anywhere -- \
+     --flake .#devbox-lite \
+     --generate-hardware-config nixos-generate-config ./hosts/devbox-lite/hardware-configuration.nix \
+     --phases kexec,disko,install \
+     root@<vm-ip>
+   ```
+4. Back in the Proxmox console (still the installer), set your real password, then reboot:
+   ```sh
+   sudo nixos-enter --root /mnt -c 'passwd chris'
+   sudo reboot
+   ```
+   Detach the ISO in Proxmox so it boots from disk.
+5. Commit the generated `hosts/<host>/hardware-configuration.nix` and push.
+6. On the new machine: `git clone` this repo to `~/nix-config`. From then on, `nh os switch`.
+
+The password never goes in git. `users.mutableUsers` is on, so `passwd` keeps working as usual.
+
+### Bare metal (gamer): by hand
+
+1. Boot the NixOS minimal ISO in UEFI mode.
 2. Partition with labels `nixos` (ext4 root) and `boot` (FAT32 ESP), as in the NixOS manual.
    Mount them at `/mnt` and `/mnt/boot`.
 3. `git clone <this repo> /mnt/home/chris/nix-config` (or copy it there).

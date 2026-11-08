@@ -18,6 +18,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Disk layouts as code; used by nixos-anywhere at install time.
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Prebuilt Rex releases. `nix flake update rex` moves to the newest snapshot.
     rex = {
       url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";

@@ -5,6 +5,7 @@
     ./core
     ./containers.nix
     ./desktop.nix
+    ./disk.nix
     ./gaming.nix
     ./home-manager.nix
     ./nvidia.nix

@@ -3,12 +3,13 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  # Create the VM with UEFI firmware (OVMF in Proxmox/libvirt) so systemd-boot works.
+  # Proxmox VM: OVMF (UEFI) firmware with "Pre-Enroll keys" unchecked, so systemd-boot works.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   my = {
     vmGuest.enable = true;
+    disk.enable = true;
     desktop.enable = true; # for the occasional GUI-only thing; day to day is Rex/SSH
     desktop.remote.enable = true;
     containers.enable = true;

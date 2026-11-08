@@ -1,16 +1,7 @@
-# PLACEHOLDER. Replace this file with the real one from the machine:
-#   nixos-generate-config --root /mnt --show-hardware-config > hosts/<host>/hardware-configuration.nix
-# The labels below match the NixOS manual's partitioning steps, so the flake evaluates before install.
-{ lib, ... }:
+# PLACEHOLDER. nixos-anywhere overwrites this at install time with the real hardware scan
+# (--generate-hardware-config). Filesystems come from disko (my.disk), not from this file.
+{ lib, modulesPath, ... }:
 {
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "ext4";
-  };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/boot";
-    fsType = "vfat";
-    options = [ "umask=0077" ];
-  };
+  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

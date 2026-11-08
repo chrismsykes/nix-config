@@ -50,11 +50,31 @@ in
     fonts.packages = with pkgs; [
       noto-fonts
       noto-fonts-color-emoji
-      nerd-fonts.meslo-lg # the font powerlevel10k expects; set your terminal to "MesloLGS Nerd Font"
+      meslo-lgs-nf # "MesloLGS NF", the Meslo build patched for powerlevel10k
     ];
 
     environment.systemPackages = with pkgs; [
       firefox
     ];
+
+    # Konsole: a default profile using MesloLGS NF, so the p10k prompt renders correctly.
+    my.user.home =
+      { lib, pkgs, ... }:
+      {
+        xdg.dataFile."konsole/Nix.profile".text = ''
+          [Appearance]
+          Font=MesloLGS NF,11,-1,5,50,0,0,0,0,0
+
+          [General]
+          Name=Nix
+          Parent=FALLBACK/
+        '';
+
+        # Only sets the one key, so konsolerc stays writable for changes made in Konsole's settings.
+        home.activation.konsoleDefaultProfile = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 --file konsolerc \
+            --group "Desktop Entry" --key DefaultProfile Nix.profile
+        '';
+      };
   };
 }

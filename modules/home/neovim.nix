@@ -11,6 +11,9 @@
     vimAlias = true;
     withPython3 = true; # replaces the pynvim virtualenv script
     withNodeJs = true;
+    # The provider settings above would otherwise be written to ~/.config/nvim/init.lua, which
+    # collides with the LazyVim config symlinked below. Pass them on neovim's command line instead.
+    sideloadInitLua = true;
     extraPackages = with pkgs; [
       # treesitter compiles parsers; Mason installs some tools via npm/pip/cargo
       gcc

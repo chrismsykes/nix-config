@@ -1,0 +1,7 @@
+result
+result-*
+*.qcow2
+# Plaintext secrets must never be committed. Only sops-encrypted files go in secrets/.
+*.dec.yaml
+*.age.key
+keys.txt

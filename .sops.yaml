@@ -1,0 +1,12 @@
+# Decides which keys can decrypt which secrets file. See README.md "Secrets" for setup.
+#
+# keys:
+#   - &chris age1xxxxxxxx...      # your personal key, from `age-keygen` (back it up in a password manager)
+#   - &devbox age1yyyyyyyy...     # the devbox host key, from `ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub`
+#
+# creation_rules:
+#   - path_regex: secrets/devbox\.yaml$
+#     key_groups:
+#       - age:
+#           - *chris
+#           - *devbox
